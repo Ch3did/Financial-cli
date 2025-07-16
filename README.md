@@ -1,6 +1,7 @@
 # financial-cli
 
-CLI simples para gerenciar finanças pessoais com importação de arquivos OFX, categorização de transações e resumo mensal de gastos.
+Este projeto é uma **releitura do [Financial-Manager](https://github.com/Ch3did/Financial-Manager)**, originalmente feito em **Python**, agora **reescrito em Go**, com arquitetura baseada em DDD
+
 
 ## Funcionalidades
 
@@ -48,7 +49,7 @@ Após a instalação, você pode executar os seguintes comandos no terminal:
 - `cx init`  
   Inicializa ou reseta o banco de dados da aplicação.
 
-> **Nota:**  
+> **Notas:**  
 > O banco de dados será criado automaticamente na pasta do usuário, dentro do diretório do projeto (`/home/usuario/financial-cli`), garantindo que seus dados fiquem localmente armazenados.
 
 
