@@ -32,7 +32,8 @@ func (i *OFXImporter) ImportAll(path string, txs []transactions.Transaction, reg
 
 	for _, tx := range txs {
 		tx.RegisterID = reg.ID
-		if err := i.TransactionRepo.Save(&tx).Error; err != nil {
+		err := i.TransactionRepo.CreateIfNotExists(&tx)
+		if err != nil {
 			return err
 		}
 	}

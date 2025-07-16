@@ -15,7 +15,7 @@ func NewTransactionRepository(db *gorm.DB) *TransactionRepository {
 	return &TransactionRepository{db}
 }
 
-func (r *TransactionRepository) CreateOrUpdate(transaction *Transaction) error {
+func (r *TransactionRepository) CreateIfNotExists(transaction *Transaction) error {
 	var existing Transaction
 
 	err := r.Where("value = ? AND date = ? AND description = ? AND transaction_id = ?",
@@ -25,14 +25,15 @@ func (r *TransactionRepository) CreateOrUpdate(transaction *Transaction) error {
 		transaction.TransactionID,
 	).First(&existing).Error
 
-	if err == nil || errors.Is(err, gorm.ErrRecordNotFound) {
-		if err := r.Create(transaction).Error; err != nil {
-			return err
-		}
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return r.Create(transaction).Error
+	}
+
+	if err != nil {
+		return err
 	}
 
 	return nil
-
 }
 
 func (r *TransactionRepository) GetTopTransactionList(limit int) ([]Transaction, error) {
