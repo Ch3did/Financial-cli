@@ -28,6 +28,7 @@ func main() {
 		Usage: "A command-line financial manager",
 		Commands: []*cli.Command{
 			options.ImportCommand(db),
+			options.InitDBCommand(db),
 			options.AddCategoryCommand(db),
 			options.ListCategoriesCommand(db),
 			options.ShowSpendSummaryCommand(db),
