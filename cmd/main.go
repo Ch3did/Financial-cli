@@ -1,0 +1,40 @@
+package main
+
+import (
+	"financial-cli/internal/cli/options"
+	"financial-cli/internal/config/database"
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/urfave/cli/v2"
+)
+
+func main() {
+	dir, err := os.Getwd()
+	if err != nil {
+		fmt.Println("Erro ao obter diretório:", err)
+		return
+	}
+	fmt.Println("Executando em:", dir)
+	db, err := database.InitDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer database.CloseDB()
+
+	app := &cli.App{
+		Name:  "financial-cli",
+		Usage: "A command-line financial manager",
+		Commands: []*cli.Command{
+			options.ImportCommand(db),
+			options.AddCategoryCommand(db),
+			options.ListCategoriesCommand(db),
+			options.ShowSpendSummaryCommand(db),
+		},
+	}
+
+	if err := app.Run(os.Args); err != nil {
+		log.Fatal(err)
+	}
+}
