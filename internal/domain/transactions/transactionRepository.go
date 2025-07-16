@@ -1,0 +1,64 @@
+package transactions
+
+import (
+	"errors"
+	"time"
+
+	"gorm.io/gorm"
+)
+
+type TransactionRepository struct {
+	*gorm.DB
+}
+
+func NewTransactionRepository(db *gorm.DB) *TransactionRepository {
+	return &TransactionRepository{db}
+}
+
+func (r *TransactionRepository) CreateOrUpdate(transaction *Transaction) error {
+	var existing Transaction
+
+	err := r.Where("value = ? AND date = ? AND description = ? AND transaction_id = ?",
+		transaction.Value,
+		transaction.Date,
+		transaction.Description,
+		transaction.TransactionID,
+	).First(&existing).Error
+
+	if err == nil || errors.Is(err, gorm.ErrRecordNotFound) {
+		if err := r.Create(transaction).Error; err != nil {
+			return err
+		}
+	}
+
+	return nil
+
+}
+
+func (r *TransactionRepository) GetTopTransactionList(limit int) ([]Transaction, error) {
+	var transactions []Transaction
+
+	err := r.Preload("Category").
+		Order("date DESC").
+		Limit(limit).
+		Find(&transactions).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return transactions, nil
+}
+
+func (r *TransactionRepository) GetTransactionsInMonth(year int, month time.Month) ([]Transaction, error) {
+	var transactions []Transaction
+
+	start := time.Date(year, month, 1, 0, 0, 0, 0, time.UTC)
+	end := start.AddDate(0, 1, 0)
+
+	if err := r.Where("date >= ? AND date < ? AND value < 0", start, end).Find(&transactions).Error; err != nil {
+		return nil, err
+	}
+
+	return transactions, nil
+}
