@@ -65,12 +65,20 @@ func ImportCommand(db *gorm.DB) *cli.Command {
 					continue
 				}
 
+				note, err := view.PromptNote()
+
+				if err != nil {
+					fmt.Println("Entrada inválida. Pulando transação.")
+					continue
+				}
+
 				tx := transactions.Transaction{
 					Description:     item.Description,
 					Date:            utils.ParseOFXDate(item.Date),
 					Value:           item.Amount,
 					TransactionType: item.Type,
 					TransactionID:   item.ID,
+					Note:            note,
 					CategoryID:      catID,
 				}
 

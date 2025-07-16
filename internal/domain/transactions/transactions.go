@@ -13,6 +13,7 @@ type Transaction struct {
 	Value           float64   `gorm:"not null"`
 	TransactionType string    `gorm:"not null"`
 	TransactionID   string    `gorm:"not null"`
+	Note            string    `gorm:"not null"`
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
 
