@@ -57,6 +57,6 @@ Após a instalação, você pode executar os seguintes comandos no terminal:
   Inicializa ou reseta o banco de dados da aplicação.
 
 > **Notas:**  
-> O banco de dados será criado automaticamente na pasta do usuário, dentro do diretório do projeto (`/home/usuario/financial-cli`), garantindo que seus dados fiquem localmente armazenados.
+> O banco de dados será criado automaticamente na pasta do usuário, dentro do diretório do projeto (`/home/usuario/fcli.db`), garantindo que seus dados fiquem localmente armazenados.
 
 

@@ -62,6 +62,6 @@ func getDBPath() string {
 		panic("Não foi possível determinar o diretório home do usuário: " + err.Error())
 	}
 
-	dbPath := filepath.Join(homeDir, "database.db")
+	dbPath := filepath.Join(homeDir, "fcli.db")
 	return dbPath
 }
