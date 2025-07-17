@@ -28,7 +28,7 @@ func ImportCommand(db *gorm.DB) *cli.Command {
 			},
 		},
 		Action: func(c *cli.Context) error {
-			view.ClearScreen()
+			view.RunIfNotDebug(view.ClearScreen)
 			path := c.Path("path")
 
 			ofxData, err := ofx.ParseOFXFile(path)
@@ -72,7 +72,8 @@ func ImportCommand(db *gorm.DB) *cli.Command {
 				}
 				existing, _ := app.OFXImporter.SearchDuplicateTransaction(tx.Value, tx.Date, tx.Description, tx.TransactionID)
 				if existing != nil {
-					fmt.Printf("Transação encontrada. Pulando transação - %s.", tx.Description)
+					fmt.Printf("Transação encontrada. Pulando transação - %s.\n", tx.Description)
+					view.RunIfNotDebug(view.ClearScreen)
 					continue
 				}
 
