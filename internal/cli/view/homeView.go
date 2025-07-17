@@ -9,7 +9,7 @@ import (
 )
 
 func ShowSpendSummary(categories []category.Category, txs []transactions.Transaction) {
-	ClearScreen()
+	RunIfNotDebug(ClearScreen)
 	spentByCategory := make(map[uint]float64)
 	for _, tx := range txs {
 		if tx.CategoryID != 0 {

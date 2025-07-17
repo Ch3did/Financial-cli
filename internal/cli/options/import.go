@@ -56,14 +56,32 @@ func ImportCommand(db *gorm.DB) *cli.Command {
 				Amount:       ofxData.BankResponse.Balance,
 			}
 
-			var txs []transactions.Transaction
+			regID, err := app.OFXImporter.CreateRegister(reg)
+			if err != nil {
+				return fmt.Errorf("erro ao creiar Registro: %w", err)
+			}
+
 			for _, item := range ofxData.BankResponse.Transactions {
+				tx := transactions.Transaction{
+					Description:     item.Description,
+					Date:            utils.ParseOFXDate(item.Date),
+					Value:           item.Amount,
+					TransactionType: item.Type,
+					TransactionID:   item.ID,
+					RegisterID:      regID,
+				}
+				existing, _ := app.OFXImporter.SearchDuplicateTransaction(tx.Value, tx.Date, tx.Description, tx.TransactionID)
+				if existing != nil {
+					fmt.Printf("Transação encontrada. Pulando transação - %s.", tx.Description)
+					continue
+				}
 
 				catID, err := view.PromptCategory(categories, item.Description, item.Amount, item.Date)
 				if err != nil {
 					fmt.Println("Entrada inválida. Pulando transação.")
 					continue
 				}
+				tx.CategoryID = catID
 
 				note, err := view.PromptNote()
 
@@ -71,22 +89,11 @@ func ImportCommand(db *gorm.DB) *cli.Command {
 					fmt.Println("Entrada inválida. Pulando transação.")
 					continue
 				}
+				tx.Note = note
 
-				tx := transactions.Transaction{
-					Description:     item.Description,
-					Date:            utils.ParseOFXDate(item.Date),
-					Value:           item.Amount,
-					TransactionType: item.Type,
-					TransactionID:   item.ID,
-					Note:            note,
-					CategoryID:      catID,
+				if err := app.OFXImporter.ImportTransaction(tx); err != nil {
+					return fmt.Errorf("erro ao importar transações: %w", err)
 				}
-
-				txs = append(txs, tx)
-			}
-
-			if err := app.OFXImporter.ImportAll(path, txs, reg); err != nil {
-				return fmt.Errorf("erro ao importar transações: %w", err)
 			}
 
 			fmt.Println("Importação concluída com sucesso!")

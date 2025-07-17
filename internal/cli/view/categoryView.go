@@ -11,7 +11,7 @@ import (
 )
 
 func PromptCategory(categories []category.Category, txDescription string, amount float64, date string) (uint, error) {
-	ClearScreen()
+	RunIfNotDebug(ClearScreen)
 	fmt.Println("--------------------------------------------------")
 	fmt.Printf("Transação: %s | Valor: %.2f | Data: %s\n", txDescription, amount, utils.ParseOFXDate(date))
 	fmt.Println("Escolha uma categoria para essa transação:")
@@ -37,7 +37,7 @@ func PromptCategory(categories []category.Category, txDescription string, amount
 }
 
 func PromptNewCategory() (*category.Category, error) {
-	ClearScreen()
+	RunIfNotDebug(ClearScreen)
 
 	reader := bufio.NewReader(os.Stdin)
 

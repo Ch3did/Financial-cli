@@ -63,3 +63,25 @@ func (r *TransactionRepository) GetTransactionsInMonth(year int, month time.Mont
 
 	return transactions, nil
 }
+
+func (r *TransactionRepository) SearchTransaction(value float64, date time.Time, description string, transactionID string) (*Transaction, error) {
+
+	var existing Transaction
+
+	err := r.Where("value = ? AND date = ? AND description = ? AND transaction_id = ?",
+		value,
+		date,
+		description,
+		transactionID,
+	).
+		First(&existing).Error
+
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	return &existing, nil
+}
