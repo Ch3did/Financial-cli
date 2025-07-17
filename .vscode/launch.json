@@ -11,7 +11,12 @@
             "mode": "auto",
             "program": "${workspaceFolder}/cmd/main.go",
             "console": "integratedTerminal",
-            "args": ["import"]
+            "args": ["import"],
+            // "args": ["home"],
+            // "args": ["add-category"],
+             "env": {
+                "DEBUG": "true"
+            }
         }
     ]
 }
