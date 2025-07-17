@@ -13,8 +13,7 @@ Este projeto é uma **releitura do [Financial-Manager](https://github.com/Ch3did
 
 ## Requisitos
 
-- Go 1.22 ou superior instalado
-- Sistema Linux (a aplicação só roda em Linux)
+- Go 1.23 ou superior instalado
 
 ## Instalação
 
@@ -29,6 +28,14 @@ Isso vai:
 - Copiar a aplicação para `/opt/financial-cli`
 - Criar o comando `cx` no `/usr/local/bin` para executar a CLI
 - Executar automaticamente o comando `cx init` para criar o banco de dados
+
+## Categorias pré-definidas
+
+  Se quiser adicionar categorias padrão automaticamente, utilize o script add_categories.sh disponível na pasta documents:
+
+  ```bash
+   ./documents/add_categories.sh
+   ```
 
 ## Uso
 
