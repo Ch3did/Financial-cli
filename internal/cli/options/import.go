@@ -96,7 +96,7 @@ func ImportCommand(db *gorm.DB) *cli.Command {
 					return fmt.Errorf("erro ao importar transações: %w", err)
 				}
 			}
-
+			view.RunIfNotDebug(view.ClearScreen)
 			fmt.Println("Importação concluída com sucesso!")
 			return nil
 		},
