@@ -8,6 +8,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func PromptCategory(categories []category.Category, txDescription string, amount float64, date string) (uint, error) {
@@ -25,13 +26,17 @@ func PromptCategory(categories []category.Category, txDescription string, amount
 	reader := bufio.NewReader(os.Stdin)
 	input, err := reader.ReadString('\n')
 	if err != nil {
-		return 0, fmt.Errorf("erro ao ler entrada: %w", err)
+		err := fmt.Errorf("erro ao ler entrada: %w", err)
+		time.Sleep(3 * time.Second)
+		return 0, err
 	}
 
 	input = strings.TrimSpace(input)
 	id, err := strconv.Atoi(input)
 	if err != nil {
-		return 0, fmt.Errorf("ID inválido: %w", err)
+		err := fmt.Errorf("ID inválido: %w", err)
+		time.Sleep(3 * time.Second)
+		return 0, err
 	}
 	return uint(id), nil
 }
@@ -48,7 +53,9 @@ func PromptNewCategory() (*category.Category, error) {
 	fmt.Print("Nome da categoria: ")
 	name, err := reader.ReadString('\n')
 	if err != nil {
-		return nil, fmt.Errorf("erro ao ler nome: %w", err)
+		err := fmt.Errorf("erro ao ler nome: %w", err)
+		time.Sleep(3 * time.Second)
+		return nil, err
 	}
 	name = strings.TrimSpace(name)
 
@@ -56,7 +63,9 @@ func PromptNewCategory() (*category.Category, error) {
 	fmt.Print("Descrição: ")
 	description, err := reader.ReadString('\n')
 	if err != nil {
-		return nil, fmt.Errorf("erro ao ler descrição: %w", err)
+		err := fmt.Errorf("erro ao ler descrição: %w", err)
+		time.Sleep(3 * time.Second)
+		return nil, err
 	}
 	description = strings.TrimSpace(description)
 
@@ -64,13 +73,17 @@ func PromptNewCategory() (*category.Category, error) {
 	fmt.Print("Valor esperado (ex: 500.00): ")
 	expStr, err := reader.ReadString('\n')
 	if err != nil {
-		return nil, fmt.Errorf("erro ao ler valor esperado: %w", err)
+		err := fmt.Errorf("erro ao ler valor esperado: %w", err)
+		time.Sleep(3 * time.Second)
+		return nil, err
 	}
 	expStr = strings.TrimSpace(expStr)
 
 	expected, err := strconv.ParseFloat(expStr, 64)
 	if err != nil {
-		return nil, fmt.Errorf("valor inválido para 'Expected': %w", err)
+		err := fmt.Errorf("valor inválido para 'Expected': %w", err)
+		time.Sleep(3 * time.Second)
+		return nil, err
 	}
 
 	return &category.Category{

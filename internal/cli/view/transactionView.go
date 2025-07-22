@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 )
 
 func PromptNote() (string, error) {
@@ -13,7 +14,9 @@ func PromptNote() (string, error) {
 	reader := bufio.NewReader(os.Stdin)
 	input, err := reader.ReadString('\n')
 	if err != nil {
-		return "", fmt.Errorf("erro ao ler entrada: %w", err)
+		err := fmt.Errorf("erro ao ler entrada: %w", err)
+		time.Sleep(3 * time.Second)
+		return "", err
 	}
 
 	note := strings.TrimSpace(input)
