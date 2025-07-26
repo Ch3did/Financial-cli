@@ -28,3 +28,11 @@ func (r *CategoryRepository) Create(cat *Category) error {
 	}
 	return nil
 }
+
+func (r *CategoryRepository) GetCategory(id uint) (Category, error) {
+	var cat Category
+	if err := r.db.First(&cat, id).Error; err != nil {
+		return cat, fmt.Errorf("erro ao buscar categoria com ID %d: %w", id, err)
+	}
+	return cat, nil
+}

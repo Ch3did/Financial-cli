@@ -20,4 +20,5 @@ type CategoryInterface interface {
 	GetAll() ([]Category, error)
 	Create(cat *Category) error
 	GetSpendCategories() ([]Category, error)
+	GetCategory(id int) (*Category, error)
 }
