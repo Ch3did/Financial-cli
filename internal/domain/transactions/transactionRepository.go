@@ -85,3 +85,17 @@ func (r *TransactionRepository) SearchTransaction(value float64, date time.Time,
 
 	return &existing, nil
 }
+
+func (r *TransactionRepository) GetCurrentMonthTransactionsByCategory(categoryID uint) ([]Transaction, error) {
+	var transactions []Transaction
+
+	now := time.Now()
+	start := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, time.UTC)
+	end := start.AddDate(0, 1, 0)
+
+	if err := r.Where("date >= ? AND date < ? AND category_id = ?", start, end, categoryID).Find(&transactions).Error; err != nil {
+		return nil, err
+	}
+
+	return transactions, nil
+}

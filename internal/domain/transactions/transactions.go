@@ -28,4 +28,5 @@ type TransactionInterface interface {
 	CreateOrUpdate() error
 	GetTopTransactionList(limit int) ([]Transaction, error)
 	GetTransactionsInMonth(year int, month time.Month) ([]Transaction, error)
+	GetCurrentMonthTransactionsByCategory(categoryID uint) ([]Transaction, error)
 }

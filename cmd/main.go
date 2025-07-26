@@ -3,7 +3,6 @@ package main
 import (
 	"financial-cli/internal/cli/options"
 	"financial-cli/internal/config/database"
-	"fmt"
 	"log"
 	"os"
 
@@ -11,12 +10,6 @@ import (
 )
 
 func main() {
-	dir, err := os.Getwd()
-	if err != nil {
-		fmt.Println("Erro ao obter diretório:", err)
-		return
-	}
-	fmt.Println("Executando em:", dir)
 	db, err := database.InitDB()
 	if err != nil {
 		log.Fatal(err)
@@ -32,6 +25,7 @@ func main() {
 			options.AddCategoryCommand(db),
 			options.ListCategoriesCommand(db),
 			options.ShowSpendSummaryCommand(db),
+			options.ShowCategoryTransactions(db),
 		},
 	}
 

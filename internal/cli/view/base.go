@@ -29,6 +29,15 @@ func ClearScreen() {
 func BaseOutput(i interface{}) {
 	val := reflect.ValueOf(i)
 
+	if val.Kind() == reflect.Ptr {
+		val = val.Elem()
+	}
+
+	if val.Kind() != reflect.Slice && val.Kind() != reflect.Array {
+		fmt.Println("BaseOutput: valor recebido não é slice nem array")
+		return
+	}
+
 	for idx := 0; idx < val.Len(); idx++ {
 		item := val.Index(idx).Interface()
 		jsonData, err := json.MarshalIndent(item, "", "    ")
@@ -39,7 +48,6 @@ func BaseOutput(i interface{}) {
 		}
 		fmt.Println(string(jsonData))
 	}
-
 }
 
 func RunIfNotDebug(fn func()) {
